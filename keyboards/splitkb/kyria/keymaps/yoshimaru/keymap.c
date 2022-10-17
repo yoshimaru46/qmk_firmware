@@ -21,16 +21,15 @@ enum layers {
     _NUM,
 };
 
-
 // Aliases for readability
-#define QWERTY   DF(_QWERTY)
-#define SYM      MO(_SYM)
+#define QWERTY DF(_QWERTY)
+#define SYM MO(_SYM)
 #define NUM MO(_NUM)
 
-#define CTL_ESC  MT(MOD_LCTL, KC_ESC)
+#define CTL_ESC MT(MOD_LCTL, KC_ESC)
 #define CTL_QUOT MT(MOD_RCTL, KC_QUOTE)
 #define CTL_MINS MT(MOD_RCTL, KC_MINUS)
-#define ALT_ENT  MT(MOD_LALT, KC_ENT)
+#define ALT_ENT MT(MOD_LALT, KC_ENT)
 
 // Note: LAlt/Enter (ALT_ENT) is not the same thing as the keyboard shortcut Alt+Enter.
 // The notation `mod/tap` denotes a key that activates the modifier `mod` when held down, and
@@ -56,7 +55,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      KC_GESC , KC_Q ,  KC_W   ,  KC_E  ,   KC_R  ,   KC_T ,                                                KC_Y,   KC_U ,  KC_I ,   KC_O  , KC_P   , KC_BSPC,
      KC_TAB  , KC_A ,  KC_S   ,  KC_D  ,   KC_F  ,   KC_G ,                                                KC_H,   KC_J ,  KC_K ,   KC_L  , KC_SCLN, KC_DEL,
      KC_LSFT , KC_Z ,  KC_X   ,  KC_C  ,   KC_V  ,   KC_B , KC_LPRN,KC_LBRC    ,     KC_RBRC  , KC_RPRN,   KC_N ,  KC_M , KC_COMM, KC_DOT , KC_SLSH, KC_QUOT,
-                                _______, MOD_LALT, KC_LGUI, SYM , CTL_T(KC_SPC),     KC_SFTENT, NUM       ,KC_RGUI, KC_RALT, KC_APP
+                                KC_MUTE, MOD_LALT, KC_LGUI, SYM , CTL_T(KC_SPC),     KC_SFTENT, NUM       ,KC_RGUI, KC_RALT, KC_APP
     ),
 
 /*
@@ -211,9 +210,9 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     } else if (index == 1) {
         // Page up/Page down
         if (clockwise) {
-            tap_code(KC_PGDN);
+            tap_code(KC_DOWN);
         } else {
-            tap_code(KC_PGUP);
+            tap_code(KC_UP);
         }
     }
     return false;
