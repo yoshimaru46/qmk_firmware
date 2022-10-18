@@ -68,6 +68,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                          KC_MUTE , KC_LALT, KC_LGUI, SYM     , CTL_T(KC_SPC) , KC_SFTENT , FKEYS   , KC_RGUI, KC_RALT, _______
     ),
 
+// ` , ~ , \ , |
+// ガーブ、チルダ、バクスラ、パイプ
+// - , _ , = , +
+// ハイフン、アンスコ、イコール、プラス
+
 /*
  * Sym Layer: Numbers and symbols
  *
