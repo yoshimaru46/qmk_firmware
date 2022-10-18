@@ -18,3 +18,5 @@
 
 // Lets you roll mod-tap keys
 #define IGNORE_MOD_TAP_INTERRUPT
+
+#define SPLIT_WPM_ENABLE
