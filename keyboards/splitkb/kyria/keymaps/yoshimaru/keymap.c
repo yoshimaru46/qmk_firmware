@@ -205,9 +205,9 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     } else if (index == 1) {
         // Page up/Page down
         if (clockwise) {
-            tap_code16(C(KC_TAB));
+            tap_code16(G(S(KC_RBRC)));
         } else {
-            tap_code16(S(C(KC_TAB)));
+            tap_code16(G(S(KC_LBRC)));
         }
     }
     return false;
