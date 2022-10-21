@@ -43,8 +43,8 @@ enum layers {
 // produces the key `tap` when tapped (i.e. pressed and released).
 
 // TODO
-// - Swap Tab & Esc
-// - Remove CTL_T(KC_SPC)
+// - [ ] Swap Tab & Esc
+// - [ ] Remove CTL_T(KC_SPC)
 
 // Shift + ( = <
 const key_override_t left_paren_angle_bracket_override = ko_make_basic(MOD_MASK_SHIFT, KC_LEFT_PAREN, KC_LEFT_ANGLE_BRACKET);
