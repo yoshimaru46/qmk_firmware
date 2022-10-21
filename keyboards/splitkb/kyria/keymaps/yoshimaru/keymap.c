@@ -31,7 +31,8 @@ enum layers {
 #define SYM MO(_SYM)
 #define FKEYS MO(_FUNCTION)
 
-#define CTL_ESC MT(MOD_LCTL, KC_ESC)
+#define CTL_ESC CTL_T(KC_ESC)
+#define CTL_SPC CTL_T(KC_SPC)
 #define CTL_TAB MT(MOD_LCTL, KC_TAB)
 #define CTL_QUOT MT(MOD_RCTL, KC_QUOTE)
 #define CTL_MINS MT(MOD_RCTL, KC_MINUS)
@@ -51,7 +52,21 @@ const key_override_t left_paren_angle_bracket_override = ko_make_basic(MOD_MASK_
 // Shift + ) = >
 const key_override_t right_paren_angle_bracket_override = ko_make_basic(MOD_MASK_SHIFT, KC_RIGHT_PAREN, KC_RIGHT_ANGLE_BRACKET);
 
-const key_override_t **key_overrides = (const key_override_t *[]){&left_paren_angle_bracket_override, &right_paren_angle_bracket_override, NULL};
+// Shift + esc = ~
+const key_override_t tilde_esc_override = ko_make_basic(MOD_MASK_SHIFT, KC_ESC, S(KC_GRV));
+
+// GUI + esc = `
+const key_override_t grave_esc_override = ko_make_basic(MOD_MASK_GUI, KC_ESC, KC_GRV);
+
+// clang-format off
+const key_override_t **key_overrides = (const key_override_t *[]){
+    &left_paren_angle_bracket_override,
+    &right_paren_angle_bracket_override,
+    &tilde_esc_override,
+    &grave_esc_override,
+    NULL
+};
+// clang-format on
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -59,21 +74,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Base Layer: QWERTY
  *
  * ,-------------------------------------------.                                      ,-------------------------------------------.
- * |  Tab   |   Q  |   W  |   E  |   R  |   T  |                                      |   Y  |   U  |   I  |   O  |   P  |  DEL   |
+ * |  Esc   |   Q  |   W  |   E  |   R  |   T  |                                      |   Y  |   U  |   I  |   O  |   P  |  DEL   |
  * |--------+------+------+------+------+------|                                      |------+------+------+------+------+--------|
- * |Ctrl/Esc|   A  |   S  |   D  |   F  |   G  |                                      |   H  |   J  |   K  |   L  | ;  : |  Bksp  |
+ * |  Tab   |   A  |   S  |   D  |   F  |   G  |                                      |   H  |   J  |   K  |   L  | ;  : |        |
  * |--------+------+------+------+------+------+-------------.          ,-------------+------+------+------+------+------+--------|
  * | LShift |   Z  |   X  |   C  |   V  |   B  | [ {  | ( <  |          | ) >  | ] }  |   N  |   M  | ,  < | . >  | /  ? | ' "    |
  * `----------------------+------+------+------+------+------|          |------+------+------+------+------+----------------------'
- *                        | MUTE | LALT | LGUI | Sym  |Space |          |Shift/| FKEYS| RGUI | AltGr|      |
- *                        |      |      |      |      |      |          |Enter |      |      |      |      |
+ *                        | MUTE | LALT | LGUI | Sym  |Ctrl/ |          |Shift/| FKEYS|      |      |      |
+ *                        |      |      |      |      |SPC   |          |Enter |      |      |      |      |
  *                        `----------------------------------'          `----------------------------------'
  */
     [_QWERTY] = LAYOUT(
-     KC_TAB  , KC_Q , KC_W, KC_E , KC_R ,   KC_T   ,                                                 KC_Y   , KC_U   , KC_I   , KC_O  , KC_P   , KC_DEL,
-     CTL_ESC , KC_A , KC_S, KC_D , KC_F ,   KC_G   ,                                                 KC_H   , KC_J   , KC_K   , KC_L  , KC_SCLN, KC_BSPC ,
+     KC_ESC  , KC_Q , KC_W, KC_E , KC_R ,   KC_T   ,                                                 KC_Y   , KC_U   , KC_I   , KC_O  , KC_P   , KC_DEL,
+     KC_TAB  , KC_A , KC_S, KC_D , KC_F ,   KC_G   ,                                                 KC_H   , KC_J   , KC_K   , KC_L  , KC_SCLN, _______,
      KC_LSFT , KC_Z , KC_X, KC_C , KC_V ,   KC_B   , KC_LBRC , KC_LPRN       , KC_RPRN   , KC_RBRC , KC_N   , KC_M   , KC_COMM, KC_DOT, KC_SLSH, KC_QUOT,
-                         KC_MUTE , KC_LALT, KC_LGUI, SYM     , KC_SPC        , KC_SFTENT , FKEYS   , KC_RGUI, KC_RALT, _______
+                         KC_MUTE , KC_LALT, KC_LGUI, SYM     , CTL_SPC       , KC_SFTENT , FKEYS   , _______, _______, _______
     ),
 
 // NOTE
@@ -124,11 +139,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
     ),
 };
-
+// clang-format on
 
 #ifdef OLED_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-	return OLED_ROTATION_180;
+    return OLED_ROTATION_180;
 }
 
 static void render_status(void) {
