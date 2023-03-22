@@ -53,7 +53,7 @@ const key_override_t left_paren_angle_bracket_override = ko_make_basic(MOD_MASK_
 const key_override_t right_paren_angle_bracket_override = ko_make_basic(MOD_MASK_SHIFT, KC_RIGHT_PAREN, KC_RIGHT_ANGLE_BRACKET);
 
 // Shift + esc = ~
-const key_override_t tilde_esc_override = ko_make_basic(MOD_MASK_SHIFT, KC_ESC, S(KC_GRV));
+const key_override_t tilde_esc_override = ko_make_basic(MOD_MASK_SHIFT, KC_ESC, KC_TILD);
 
 // GUI + esc = `
 const key_override_t grave_esc_override = ko_make_basic(MOD_MASK_GUI, KC_ESC, KC_GRV);
@@ -66,6 +66,30 @@ const key_override_t **key_overrides = (const key_override_t *[]){
     &grave_esc_override,
     NULL
 };
+
+// Tap Dance declarations
+enum {
+    CT_CLN, // Reverses colon and semicolon and triggers semicolon on tap dance.
+};
+void dance_cln_finished(qk_tap_dance_state_t *state, void *user_data) {
+    if (state->count == 1) {
+        register_code16(KC_COLN);
+    } else {
+        register_code(KC_SCLN);
+    }
+}
+void dance_cln_reset(qk_tap_dance_state_t *state, void *user_data) {
+    if (state->count == 1) {
+        unregister_code16(KC_COLN);
+    } else {
+        unregister_code(KC_SCLN);
+    }
+}
+// All tap dance functions would go here.
+qk_tap_dance_action_t tap_dance_actions[] = {
+    [CT_CLN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_cln_finished, dance_cln_reset),
+};
+
 // clang-format on
 
 // clang-format off
@@ -76,7 +100,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-------------------------------------------.                                      ,-------------------------------------------.
  * |  Esc   |   Q  |   W  |   E  |   R  |   T  |                                      |   Y  |   U  |   I  |   O  |   P  |  DEL   |
  * |--------+------+------+------+------+------|                                      |------+------+------+------+------+--------|
- * |  Tab   |   A  |   S  |   D  |   F  |   G  |                                      |   H  |   J  |   K  |   L  | ;  : |  Bksp  |
+ * |  Tab   |   A  |   S  |   D  |   F  |   G  |                                      |   H  |   J  |   K  |   L  | :  ; |  Bksp  |
  * |--------+------+------+------+------+------+-------------.          ,-------------+------+------+------+------+------+--------|
  * | LShift |   Z  |   X  |   C  |   V  |   B  | [ {  |      |          |      | ] } |   N  |   M  | ,  < | . >  | /  ? | ' "    |
  * `----------------------+------+------+------+------+------|          |------+------+------+------+------+----------------------'
@@ -85,9 +109,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                        `----------------------------------'          `----------------------------------'
  */
     [_QWERTY] = LAYOUT(
-     KC_ESC  , KC_Q , KC_W, KC_E , KC_R ,   KC_T   ,                                                 KC_Y   , KC_U   , KC_I   , KC_O  , KC_P   , KC_DEL ,
-     KC_TAB, KC_A , KC_S, KC_D , KC_F ,   KC_G   ,                                                 KC_H   , KC_J   , KC_K   , KC_L  , KC_SCLN, KC_BSPC,
-     KC_LSFT , KC_Z , KC_X, KC_C , KC_V ,   KC_B   , KC_LBRC , _______       , _______   , KC_RBRC , KC_N   , KC_M   , KC_COMM, KC_DOT, KC_SLSH, KC_QUOT,
+     KC_ESC  , KC_Q , KC_W, KC_E , KC_R ,   KC_T   ,                                                 KC_Y   , KC_U   , KC_I   , KC_O  , KC_P      , KC_DEL ,
+     KC_TAB  , KC_A , KC_S, KC_D , KC_F ,   KC_G   ,                                                 KC_H   , KC_J   , KC_K   , KC_L  , TD(CT_CLN), KC_BSPC,
+     KC_LSFT , KC_Z , KC_X, KC_C , KC_V ,   KC_B   , KC_LBRC , _______       , _______   , KC_RBRC , KC_N   , KC_M   , KC_COMM, KC_DOT, KC_SLSH   , KC_QUOT,
                          KC_MUTE , KC_LALT, KC_LGUI, SYM     , CTL_SPC       , KC_SFTENT , FKEYS   , KC_RGUI, _______, _______
     ),
 

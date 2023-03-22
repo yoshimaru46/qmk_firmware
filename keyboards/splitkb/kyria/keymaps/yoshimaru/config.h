@@ -20,3 +20,7 @@
 #define IGNORE_MOD_TAP_INTERRUPT
 
 #define SPLIT_WPM_ENABLE
+
+// 175ms 以内に2回タップするとトグル
+#define TAPPING_TERM 175
+#define TAPPING_TOGGLE 2
